@@ -6,11 +6,12 @@ import { BufferGeometry, Material, Mesh } from 'three'
 const Box = ({ z }) => {
 	const ref = useRef<any>()
 	// const ref = useRef<Mesh<BufferGeometry, Material | Material[]>>()
-	const { viewport } = useThree()
+	const { viewport, camera } = useThree()
+	const { width, height } = viewport.getCurrentViewport(camera, [0, 0, z])
 
 	const [data] = useState({
 		x: THREE.MathUtils.randFloatSpread(2), // -1 to 1
-		y: THREE.MathUtils.randFloatSpread(viewport.height),
+		y: THREE.MathUtils.randFloatSpread(height),
 	})
 
 	const [clicked, setClicked] = useState(false)
@@ -18,9 +19,9 @@ const Box = ({ z }) => {
 		// ref.current.rotation.x = Math.sin(state.clock.elapsedTime) * 2
 		// ref.current.rotation.y = Math.sin(state.clock.elapsedTime)
 		// ref.current.position.z = THREE.MathUtils.lerp(ref.current.position.z, clicked ? 1 : 0, 0.1)
-		ref.current.position.set(data.x * viewport.width, (data.y += 0.06), z)
-		if (data.y > viewport.height / 1.5) {
-			data.y = -viewport.height / 1.5
+		ref.current.position.set(data.x * width, (data.y += 0.1), z)
+		if (data.y > height / 1.5) {
+			data.y = -height / 1.5
 		}
 	})
 
